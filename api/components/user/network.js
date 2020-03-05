@@ -33,7 +33,7 @@ router.post('/', (req,res)=>{
             response.success(req,res,200,user)
         })
         .catch((err)=>{
-            console.error("#ERROR#")
+            console.error("#ERROR#", err)
             response.error(req,res,500,err)
         })
 })

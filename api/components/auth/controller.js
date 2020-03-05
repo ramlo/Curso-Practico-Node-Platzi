@@ -1,6 +1,6 @@
 const TABLA = 'auth'
 const auth = require('../../../auth')
-
+const bcrypt = require('bcryptjs')
 
 module.exports = function (injectedStore){
         let store = injectedStore
@@ -15,13 +15,11 @@ module.exports = function (injectedStore){
             }else{
                 throw new Error('Informacion Invalida')
             }
-            
         }
 
-        function upsert(data){
+        async function upsert(data){
             const authData = {
                 id : data.id,
-
             }
 
             if(data.username){
@@ -29,7 +27,7 @@ module.exports = function (injectedStore){
             }
 
             if (data.password){
-                authData.password = data.password
+                authData.password = await (bcrypt.hash(data.password,12))
             }
             return store.upsert(TABLA, authData)
         }

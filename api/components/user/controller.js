@@ -22,7 +22,7 @@ module.exports = function (injectedStore) {
         } else {
             user.id = nanoid()
         }
-
+        console.log('Try to hash! ')
         if(data.username || data.password){
             await auth.upsert({
                 id : user.id,
