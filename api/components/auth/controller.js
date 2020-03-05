@@ -7,13 +7,20 @@ module.exports = function (injectedStore){
         if(!store){
             store = require('../../../store/dummy')
         }
-
+        
         async function login(username, password){
-            const data = await store.query(TABLA, {username: username})
-            if(data.password === password){
-                return auth.sign(data)
-            }else{
-                throw new Error('Informacion Invalida')
+            try {
+                
+                const data = await store.query(TABLA, {username: username})
+                const compare = await bcrypt.compare( password,data.password)
+                
+                if(compare){
+                    return auth.sign(data)
+                }else{
+                    throw new Error('Informacion Invalida')
+                }
+            }catch(err){
+                console.err("Error on login!")
             }
         }
 
