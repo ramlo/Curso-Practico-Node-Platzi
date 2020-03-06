@@ -38,6 +38,21 @@ router.post('/', (req,res)=>{
         })
 })
 
+
+router.put('/', (req,res)=>{
+    console.log('Data: ',req.body)
+    controller.upsert(req.body)
+        .then((user)=>{
+            console.log('User: ',user)
+            response.success(req,res,200,user)
+        })
+        .catch((err)=>{
+            console.error("#ERROR#", err)
+            response.error(req,res,500,err)
+        })
+})
+
+
 router.delete('/:id', (req,res)=>{
     controller.remove(req.params.id)
         .then((user)=>{
