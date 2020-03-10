@@ -1,5 +1,6 @@
 const express = require('express')
 
+const secure = require('./secure')
 const response = require('../../../network/response');
 const controller = require('./index')
 
@@ -39,12 +40,12 @@ router.post('/', (req,res)=>{
 })
 
 
-router.put('/', (req,res)=>{
+router.put('/', secure('update'),(req,res)=>{
     console.log('Data: ',req.body)
     controller.upsert(req.body)
         .then((user)=>{
             console.log('User: ',user)
-            response.success(req,res,200,user)
+            response.success(req,res,201,user)
         })
         .catch((err)=>{
             console.error("#ERROR#", err)

@@ -3,19 +3,25 @@ const config = require('../config/config')
 
 let secret = config.jwt.secret
 
+
 function sign(data){
     return jwt.sign(data, secret)
 }
 
-function verify(token, secret){
-    jwt.verify(token, secret)
+function verify(token){
+    return jwt.verify(token, secret)
 }
-
 
 const check = {
     own: function (req, owner){
         const decoded = decodeHeader(req);
-        console.log(decode)
+        console.log(decoded)
+        console.log('Owner: ',owner)
+        console.log('Decoded Id: ',decoded.id)
+        if(decoded.id !== owner){
+            throw new Error ('No puedes editar el usuario')
+        }
+        return decoded
     },
 }
 
@@ -36,9 +42,11 @@ function getToken(auth){
 
 function decodeHeader(req){
     const authorization = req.headers.authorization || '';
+    console.log("2.-",authorization)
     const token = getToken(authorization)
+    console.log("3.-",token)
     const decoded = verify(token)
-    
+    console.log("4.-",decoded)
     req.user = decoded
     
     return decoded

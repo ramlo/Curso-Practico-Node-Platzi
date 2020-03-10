@@ -21,7 +21,7 @@ async function upsert(tabla, data) {
     db[tabla].push(data)
     console.log('DB Upserted: ', db)
     
-    return data.id
+    //return data.id
 }
 
 async function remove(tabla, id) {
