@@ -15,7 +15,7 @@ function verify(token){
 
 const check = {
     own: function (req, owner){
-        const decoded = decodeHeader(req);
+        const decoded = decodeHeader(req)
         console.log(decoded)
         console.log('Owner: ',owner)
         console.log('Decoded Id: ',decoded.id)
@@ -24,6 +24,12 @@ const check = {
         }
         return decoded
     },
+    logged: function(req){
+        const decoded = decodeHeader(req)
+        if(decoded.id === null || ''){
+            throw error('The user is not logged')
+        }
+    }
 }
 
 function getToken(auth){
@@ -56,4 +62,4 @@ function decodeHeader(req){
 module.exports = {
     sign,
     check,
-}
+    }

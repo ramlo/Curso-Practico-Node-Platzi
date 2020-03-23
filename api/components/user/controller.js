@@ -23,9 +23,9 @@ module.exports = function (injectedStore) {
             user.id = nanoid()
         }
         console.log('Try to hash! ')
-        if(data.username || data.password){
+        if (data.username || data.password) {
             await auth.upsert({
-                id : user.id,
+                id: user.id,
                 username: user.username,
                 password: data.password
             })
@@ -36,10 +36,22 @@ module.exports = function (injectedStore) {
     function remove(id) {
         return store.remove(TABLA, id)
     }
+
+    function follow(from, to) {
+        return store.upsert(
+            TABLA + '_follow',
+            {
+                user_from: from,
+                user_to: to,
+            }
+        )
+    }
+
     return {
         list,
         get,
         upsert,
-        remove
+        remove,
+        follow
     }
 }

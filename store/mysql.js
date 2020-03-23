@@ -74,6 +74,7 @@ function update(table, data){
 
 function insert(table, data){
     return new Promise((resolve, reject)=>{
+        console.log(`Going to make an insert into table: ${table} with data: ${data}`)
         connection.query(`INSERT INTO ${table} SET ?`,data,(err,result)=>{
             if(err){
                 console.error("###ERR###: ",err)
@@ -84,7 +85,6 @@ function insert(table, data){
         })
     })
 }
-
 
 function query(table,query){
     return new Promise ((resolve,reject)=>{
@@ -98,9 +98,8 @@ function query(table,query){
     })
 }
 
-function upsert(table,data){
-    let row = get(table, data.id)
-    if(row){
+async function upsert(table,data){
+    if(data.id){
         console.log("Updating")
         return update(table,data)
     }else{
@@ -113,5 +112,4 @@ module.exports= {
     get,
     upsert,
     query
-
 }
