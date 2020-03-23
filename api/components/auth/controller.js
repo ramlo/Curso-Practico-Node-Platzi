@@ -12,7 +12,8 @@ module.exports = function (injectedStore){
             try {
                 
                 const data = await store.query(TABLA, {username: username})
-                const compare = await bcrypt.compare( password,data.password)
+                console.log("This is the data: ",data)
+                const compare = await bcrypt.compare(password,data.password)
                 
                 if(compare){
                     return auth.sign(data)
@@ -20,7 +21,8 @@ module.exports = function (injectedStore){
                     throw new Error('Informacion Invalida')
                 }
             }catch(err){
-                console.err("Error on login!")
+                console.error("Error on login!",err)
+                throw err
             }
         }
 

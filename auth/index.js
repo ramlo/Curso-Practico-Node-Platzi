@@ -5,7 +5,8 @@ let secret = config.jwt.secret
 
 
 function sign(data){
-    return jwt.sign(data, secret)
+    console.log("This is the data to sing in: ",JSON.stringify(data), secret)
+    return jwt.sign(JSON.stringify(data), secret)
 }
 
 function verify(token){
