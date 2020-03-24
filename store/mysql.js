@@ -46,8 +46,10 @@ function list(table){
 
 function get(table, id){
     return new Promise((resolve, reject)=>{
+        console.log("Making an select!")
         connection.query(`SELECT * FROM ${table} WHERE ID= ?`,id,(err,data)=>{
             if(err){
+                console.error("An Error!")
                 return reject(err)
             }else{
                 return resolve(data)
@@ -86,9 +88,15 @@ function insert(table, data){
     })
 }
 
-function query(table,query){
+function query(table,query, join){
+    let joinQuery = '';
+    if(join){
+        const key = Object.keys(join)[0];
+        const val = join[key];
+        joinQuery= `JOIN ${key} ON ${table}.${val} = ${key}.id`
+    }
     return new Promise ((resolve,reject)=>{
-        connection.query(`SELECT * FROM ${table} WHERE ?`,query,(err,result)=>{
+        connection.query(`SELECT * FROM ${table} ${joinQuery} WHERE ?`,query,(err,result)=>{
             if(err){
                 return reject(err)
             }else{

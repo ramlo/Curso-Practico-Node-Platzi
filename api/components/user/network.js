@@ -11,15 +11,38 @@ const router = express.Router();
  *      * Separete function get/post/delete,etc into function
  */
 
+router.post('/follow/:id', secure('follow'), (req, res, next) => {
+    console.log("The user to be logged is: ", req.user.id)
+    controller.follow(req.user.id, req.params.id)
+        .then((data) => {
+            console.log("Follow ! Data: ", data)
+            response.success(req, res, 201, data)
+        })
+        .catch(next)
+})
+
+router.get('/:id/following', (req, res, next) => {
+    console.log("#########################")
+    console.log("Get List Of followers from user: ", req.params.id)
+    controller.following(req.params.id)
+        .then((list) => {
+            console.log(list)
+            response.success(req, res, 200, list)
+        })
+        .catch(next)
+})
+
 router.get('/', (req, res, next) => {
     controller.list()
         .then((lista) => {
             response.success(req, res, 200, lista)
         })
         .catch((err) => {
+            console.error("Error at GET")
             response.error(req, res, 500, err.message)
         })
 })
+
 
 router.get('/:id', (req, res, next) => {
     controller.get(Number(req.params.id))
@@ -27,6 +50,7 @@ router.get('/:id', (req, res, next) => {
             response.success(req, res, 200, user)
         })
         .catch((err) => {
+            console.error("Error at GET by id")
             response.error(req, res, 500, err)
         })
 })
@@ -67,16 +91,5 @@ router.delete('/:id', (req, res, next) => {
             response.error(req, res, 500, err)
         })
 })
-
-router.post('/follow/:id', secure('follow'), (req, res, next) => {
-    console.log("The user to be logged is: ",req.user.id)
-    controller.follow(req.user.id, req.params.id)
-        .then((data) => {
-            console.log("Follow ! Data: ",data)
-            response.success(req, res, 201, data)
-        })
-        .catch(next)
-})
-
 
 module.exports = router;
