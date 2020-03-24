@@ -6,6 +6,7 @@ const swaggerUI = require('swagger-ui-express')
 const swaggerDoc = require('./../swagger.json')
 const user = require('./components/user/network');
 const errors = require('../network/errors')
+const post = require('./components/post/network')
 const auth = require('./components/auth/network')
 const PORT = config.api.port;
 
@@ -14,7 +15,7 @@ app.use(bodyParser.json());
 // Router
 app.use('/api/user',user)
 app.use('/api/auth',auth)
-
+app.use('/api/post',post)
 //Documentation
 app.use('/api-docs',swaggerUI.serve,swaggerUI.setup(swaggerDoc))
 
